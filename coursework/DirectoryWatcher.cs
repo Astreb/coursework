@@ -61,16 +61,10 @@ namespace coursework
 
         }
 
-
         public DirectoryWatcher(MainWindow window, string directoryPath)
         {
             this.directoryPath = directoryPath;
             this.window = window;
-        }
-
-        public void PrintChangesLog()
-        {
-
         }
     }
 }

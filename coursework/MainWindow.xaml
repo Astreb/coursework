@@ -19,7 +19,7 @@
             Фильтр файлов
             </TextBlock>
             <ComboBox x:Name="filterSelector" HorizontalAlignment="Left" Height="21" Margin="27,105,0,0" VerticalAlignment="Top" Width="379">
-                <TextBlock>".*"</TextBlock>
+                <TextBlock Selector.IsSelected="True">*.*</TextBlock>
                 <TextBlock>Только текстовые файлы</TextBlock>
             </ComboBox>
             <Button x:Name="runButton" HorizontalAlignment="Left" Height="21" Margin="411,105,0,0" VerticalAlignment="Top" Width="127" Click="RunButtonClick">
