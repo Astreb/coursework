@@ -64,6 +64,9 @@ namespace coursework
 
             if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
+                fsLastRaised = DateTime.Now;
+                System.Threading.Thread.Sleep(100);
+
                 this.Dispatcher.Invoke((Action)(() =>
                 {
                     string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Renamed");
@@ -77,6 +80,9 @@ namespace coursework
         {
                 if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
                 {
+                    fsLastRaised = DateTime.Now;
+                    System.Threading.Thread.Sleep(100);
+
                     this.Dispatcher.Invoke((Action)(() =>
                         {
                             string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Deleted");
@@ -89,10 +95,14 @@ namespace coursework
         {
             if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
+                fsLastRaised = DateTime.Now;
+                System.Threading.Thread.Sleep(100);
+
                 this.Dispatcher.Invoke((Action)(() =>
                 {
                     string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Changed");
                     changesLog.Items.Add(log);
+
                 }));
             }
         }
@@ -102,6 +112,9 @@ namespace coursework
         {
             if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
+                fsLastRaised = DateTime.Now;
+                System.Threading.Thread.Sleep(100);
+
                 this.Dispatcher.Invoke((Action)(() =>
                 {
                     string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Created");
@@ -153,8 +166,8 @@ namespace coursework
                     filter = "*.*";
                 fs = new FileSystemWatcher(directoryPath, filter);
 
-                //fs.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
-                //                  NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
+                fs.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
+                                  NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
 
                 RunWatcher();
                 fs.IncludeSubdirectories = true;
