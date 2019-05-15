@@ -86,7 +86,7 @@ namespace coursework
         public string get_log_line(string path, FileSystemEventArgs changeEvent, string event_type)
         {
             string log = string.Format("{0} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
-            if (event_type == "Deleted")
+            if (event_type == "Deleted" || event_type == "Changed")
                 return log;
 
             FileAttributes attr = File.GetAttributes(path);

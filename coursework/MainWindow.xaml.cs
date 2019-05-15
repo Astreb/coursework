@@ -87,21 +87,27 @@ namespace coursework
 
         protected void OnChanged(object fschanged, FileSystemEventArgs changeEvent)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
-                string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Cheanged");
-                changesLog.Items.Add(log);
-            }));
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Changed");
+                    changesLog.Items.Add(log);
+                }));
+            }
         }
 
 
         protected void OnCreated(object fscreated, FileSystemEventArgs changeEvent)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
-                string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Created");
-                changesLog.Items.Add(log);
-            }));
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Created");
+                    changesLog.Items.Add(log);
+                }));
+            }
         }
 
 
