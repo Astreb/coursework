@@ -11,18 +11,18 @@
             <TextBlock HorizontalAlignment="Left" Height="21" Margin="27,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166">
             Директория для мониторинга
             </TextBlock>
-            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="21" Margin="27,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379"/>
-            <Button HorizontalAlignment="Left" Height="21" Margin="411,38,0,0" VerticalAlignment="Top" Width="127">
+            <TextBox x:Name="directoryPath" IsReadOnly="True" HorizontalAlignment="Left" Height="21" Margin="27,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379"/>
+            <Button x:Name="directoryButton" HorizontalAlignment="Left" Height="21" Margin="411,38,0,0" VerticalAlignment="Top" Width="127" Click="DirectoryButtonClick">
                 Выбрать директорию
             </Button>
             <TextBlock HorizontalAlignment="Left" Height="21" Margin="27,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127">
             Фильтр файлов
             </TextBlock>
-            <ComboBox HorizontalAlignment="Left" Height="21" Margin="27,105,0,0" VerticalAlignment="Top" Width="379">
+            <ComboBox x:Name="filterSelector" HorizontalAlignment="Left" Height="21" Margin="27,105,0,0" VerticalAlignment="Top" Width="379">
                 <TextBlock>".*"</TextBlock>
                 <TextBlock>Только текстовые файлы</TextBlock>
             </ComboBox>
-            <Button HorizontalAlignment="Left" Height="21" Margin="411,105,0,0" VerticalAlignment="Top" Width="127">
+            <Button x:Name="runButton" HorizontalAlignment="Left" Height="21" Margin="411,105,0,0" VerticalAlignment="Top" Width="127" Click="RunButtonClick">
                 Включить мониторинг
             </Button>
             <StackPanel Margin="0 131 0 1">
@@ -40,7 +40,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>            
 
-            <ListBox Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+            <ListBox x:Name="changesLog" ScrollViewer.VerticalScrollBarVisibility="Auto" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
             <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black"></Border>
         </Grid>
     </DockPanel>
