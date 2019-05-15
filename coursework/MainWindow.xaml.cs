@@ -32,6 +32,22 @@ namespace coursework
             this.watcher = null;
         }
 
+
+        private void RunWatcher()
+        {
+            changesLog.Items.Clear();
+            this.changesLog.Items.Add("Начало работы.");
+            fs.EnableRaisingEvents = true;
+        }
+
+
+        private void StopWatcher()
+        {
+            this.changesLog.Items.Add("Работа завершена.");
+            fs.EnableRaisingEvents = false;
+        }
+
+
         private void DirectoryButtonClick(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -40,14 +56,6 @@ namespace coursework
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 this.directoryPath.Text = fbd.SelectedPath;
-                fs = new FileSystemWatcher(directoryPath.Text, "*.*");
-
-                fs.EnableRaisingEvents = true;
-                fs.IncludeSubdirectories = true;
-                fs.Created += new FileSystemEventHandler(OnCreated);
-                fs.Changed += new FileSystemEventHandler(OnChanged);
-                fs.Renamed += new RenamedEventHandler(OnRenamed);
-                fs.Deleted += new FileSystemEventHandler(OnDeleted);
             }
         }
 
@@ -56,12 +64,9 @@ namespace coursework
 
             if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
             {
-                string log = string.Format("{0:G} | {1} | Переименован файл {2}",
-                                            DateTime.Now, changeEvent.FullPath, changeEvent.OldName);
-
                 this.Dispatcher.Invoke((Action)(() =>
                 {
-                    //to display a notification about the rename in listbox
+                    string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Renamed");
                     changesLog.Items.Add(log);
                 }));
 
@@ -72,21 +77,19 @@ namespace coursework
         {
                 if (DateTime.Now.Subtract(fsLastRaised).TotalMilliseconds > 1000)
                 {
-                    string log = string.Format("{0:G} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
                     this.Dispatcher.Invoke((Action)(() =>
-                    {
-                        //to display a notification about the delete in listbox
-                        changesLog.Items.Add(log);
-                    }));
+                        {
+                            string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Deleted");
+                            changesLog.Items.Add(log);
+                        }));
                 }
         }
 
         protected void OnChanged(object fschanged, FileSystemEventArgs changeEvent)
         {
-            string log = string.Format("{0:G} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
             this.Dispatcher.Invoke((Action)(() =>
             {
-                //to display a notification about the delete in listbox
+                string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Cheanged");
                 changesLog.Items.Add(log);
             }));
         }
@@ -94,11 +97,21 @@ namespace coursework
 
         protected void OnCreated(object fscreated, FileSystemEventArgs changeEvent)
         {
-            string log = string.Format("{0:G} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
             this.Dispatcher.Invoke((Action)(() =>
             {
-                //to display a notification about the delete in listbox
+                string log = watcher.get_log_line(changeEvent.FullPath, changeEvent, "Created");
                 changesLog.Items.Add(log);
+            }));
+        }
+
+
+        void LogBufferError(object sender, ErrorEventArgs event_)
+        {
+            string log = string.Format("{0} | Переполнен внутренний буфер", DateTime.Now);
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                changesLog.Items.Add(log);
+                StopWatcher();
             }));
         }
 
@@ -114,9 +127,7 @@ namespace coursework
             if (!status)
             {
                 this.runButton.Content = "Включить мониторинг";
-                this.changesLog.Items.Add("Работа завершена.");
-                // this.watcher.StopWatcher();
-                this.watcher = null;
+                StopWatcher();
             }
             else
             {
@@ -130,7 +141,22 @@ namespace coursework
                     return;
                 }
 
-                //this.watcher = new DirectoryWatcher(this, directoryPath);
+                watcher = new DirectoryWatcher(this, directoryPath);
+                string filter = filterSelector.Text;
+                if (filter == "")
+                    filter = "*.*";
+                fs = new FileSystemWatcher(directoryPath, filter);
+
+                //fs.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName |
+                //                  NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size;
+
+                RunWatcher();
+                fs.IncludeSubdirectories = true;
+                fs.Created += new FileSystemEventHandler(OnCreated);
+                fs.Changed += new FileSystemEventHandler(OnChanged);
+                fs.Renamed += new RenamedEventHandler(OnRenamed);
+                fs.Deleted += new FileSystemEventHandler(OnDeleted);
+                fs.Error += new ErrorEventHandler(LogBufferError);
                 this.runButton.Content = "Завершить мониторинг";
             }
         }

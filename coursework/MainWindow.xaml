@@ -11,7 +11,7 @@
             <TextBlock HorizontalAlignment="Left" Height="21" Margin="27,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166">
             Директория для мониторинга
             </TextBlock>
-            <TextBox x:Name="directoryPath" IsReadOnly="True" HorizontalAlignment="Left" Height="21" Margin="27,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379"/>
+            <TextBox x:Name="directoryPath" HorizontalAlignment="Left" Height="21" Margin="27,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379"/>
             <Button x:Name="directoryButton" HorizontalAlignment="Left" Height="21" Margin="411,38,0,0" VerticalAlignment="Top" Width="127" Click="DirectoryButtonClick">
                 Выбрать директорию
             </Button>
@@ -19,8 +19,26 @@
             Фильтр файлов
             </TextBlock>
             <ComboBox x:Name="filterSelector" HorizontalAlignment="Left" Height="21" Margin="27,105,0,0" VerticalAlignment="Top" Width="379">
-                <TextBlock Selector.IsSelected="True">*.*</TextBlock>
-                <TextBlock>Только текстовые файлы</TextBlock>
+                <ComboBoxItem IsSelected="True">
+                    <TextBlock>*.*</TextBlock>
+                </ComboBoxItem>
+
+                <ComboBoxItem>
+                    <TextBlock>*.txt</TextBlock>
+                </ComboBoxItem>
+
+                <ComboBoxItem>
+                    <TextBlock>*.py</TextBlock>
+                </ComboBoxItem>
+
+                <ComboBoxItem>
+                    <TextBlock>*.cs</TextBlock>
+                </ComboBoxItem>
+
+                <ComboBoxItem>
+                    <TextBlock>*.doc</TextBlock>
+                </ComboBoxItem>
+
             </ComboBox>
             <Button x:Name="runButton" HorizontalAlignment="Left" Height="21" Margin="411,105,0,0" VerticalAlignment="Top" Width="127" Click="RunButtonClick">
                 Включить мониторинг
@@ -38,12 +56,16 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>            
+            </Grid.RowDefinitions>
 
             <ListBox x:Name="changesLog" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                     Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0"/>
+                     Foreground="Black" HorizontalAlignment="Left" VerticalAlignment="Top"
+                     HorizontalContentAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0">
+            </ListBox>
             <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black"></Border>
         </Grid>
     </DockPanel>
+    
+    
 </Window>

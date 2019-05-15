@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,6 +61,59 @@ namespace coursework
             }
 
         }
+
+
+        public string get_md5(string path)
+        {
+            using (FileStream fs = System.IO.File.OpenRead(path))
+            {
+                MD5 md5 = new MD5CryptoServiceProvider();
+                byte[] fileData = new byte[fs.Length];
+                fs.Read(fileData, 0, (int)fs.Length);
+                byte[] checkSum = md5.ComputeHash(fileData);
+                string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
+                return result;
+            }
+        }
+
+
+        public long get_size(string path)
+        {
+            return new FileInfo(path).Length;
+        }
+
+
+        public string get_log_line(string path, FileSystemEventArgs changeEvent, string event_type)
+        {
+            string log = string.Format("{0} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
+            if (event_type == "Deleted")
+                return log;
+
+            FileAttributes attr = File.GetAttributes(path);
+
+            if ((attr & FileAttributes.Directory) != FileAttributes.Directory)
+                log += string.Format(" | size={0} | md5={1}", get_size(path), get_md5(path));
+
+            return log;
+        }
+
+
+        public string get_log_line(string path, RenamedEventArgs changeEvent, string event_type)
+        {
+            string log = string.Format("{0} | {1} | {2}", DateTime.Now, changeEvent.FullPath, changeEvent.ChangeType);
+            if (event_type == "Deleted")
+                return log;
+
+            FileAttributes attr = File.GetAttributes(path);
+
+            if ((attr & FileAttributes.Directory) != FileAttributes.Directory)
+                log += string.Format(" | size={0} | md5={1}", get_size(path), get_md5(path));
+
+            log += string.Format(" | last_name={0}", changeEvent.OldName);
+
+            return log;
+        }
+
 
         public DirectoryWatcher(MainWindow window, string directoryPath)
         {
