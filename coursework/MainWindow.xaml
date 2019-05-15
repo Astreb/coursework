@@ -5,8 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:coursework"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Watcher" Height="450" Width="800">
+    <DockPanel LastChildFill="True" Background="#0776A0">
+        <Grid DockPanel.Dock="Top">
+            <TextBlock HorizontalAlignment="Left" Height="21" Margin="27,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166">
+            Директория для мониторинга
+            </TextBlock>
+            <TextBox IsReadOnly="True" HorizontalAlignment="Left" Height="21" Margin="27,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379"/>
+            <Button HorizontalAlignment="Left" Height="21" Margin="411,38,0,0" VerticalAlignment="Top" Width="127">
+                Выбрать директорию
+            </Button>
+            <TextBlock HorizontalAlignment="Left" Height="21" Margin="27,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="127">
+            Фильтр файлов
+            </TextBlock>
+            <ComboBox HorizontalAlignment="Left" Height="21" Margin="27,105,0,0" VerticalAlignment="Top" Width="379">
+                <TextBlock>".*"</TextBlock>
+                <TextBlock>Только текстовые файлы</TextBlock>
+            </ComboBox>
+            <Button HorizontalAlignment="Left" Height="21" Margin="411,105,0,0" VerticalAlignment="Top" Width="127">
+                Включить мониторинг
+            </Button>
+            <StackPanel Margin="0 131 0 1">
+                <TextBlock HorizontalAlignment="Center" FontSize="16">Изменения</TextBlock>
+            </StackPanel>
+
+        </Grid>
+
+        <Grid DockPanel.Dock="Bottom" Margin="2 5 2 2" Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>            
+
+            <ListBox Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+            <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black"></Border>
+        </Grid>
+    </DockPanel>
 </Window>
