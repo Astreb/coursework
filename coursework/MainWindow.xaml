@@ -40,7 +40,9 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>            
 
-            <ListBox x:Name="changesLog" ScrollViewer.VerticalScrollBarVisibility="Auto" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0"/>
+            <ListBox x:Name="changesLog" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                     Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0"/>
             <Border Grid.Column="0" Grid.Row="0" BorderThickness="1" BorderBrush="Black"></Border>
         </Grid>
     </DockPanel>
